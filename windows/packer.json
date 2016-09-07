@@ -1,0 +1,98 @@
+{
+  "variables": {
+    "iso_path": "{{user `iso_path`}}",
+    "iso_sha256": "{{user `iso_checksum`}}",
+    "webserver": "http://{{ .HTTPIP }}:{{ .HTTPPort }}"
+  },
+
+  "builders": [
+  {    
+    "type": "vmware-iso",
+    "communicator": "winrm",
+    "disk_size": 51200,
+    "floppy_files": [
+      "Autounattend.xml",
+      "configure-winrm.ps1"
+    ],
+    "guest_os_type": "windows9-64",
+    "headless": true,
+    "iso_url": "{{user `iso_path`}}",
+    "iso_checksum_type": "sha256",
+    "iso_checksum": "{{user `iso_sha256`}}",    
+    "http_directory": "Files",
+    "boot_command": "{{ .HTTPIP }}:{{ .HTTPPort }}",
+    "winrm_username": "vagrant",
+    "winrm_password": "vagrant",
+    "winrm_timeout": "6h",
+    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+    "skip_compaction": false,
+    "tools_upload_flavor": "windows",
+    "tools_upload_path": "c:/Windows/Temp/windows.iso",
+    "http_port_min" : "9003",
+    "http_port_max" : "9003",
+    "vmx_data": {
+      "gui.fitguestusingnativedisplayresolution": "FALSE",
+      "memsize": "2048",
+      "vmx.allowNested" : "TRUE",
+      "allowNested" : "TRUE",
+      "numvcpus": "2",
+      "virtualHW.version": "10",
+      "scsi0.virtualDev": "lsisas1068"
+      }
+}
+  ],
+  "provisioners": [
+  {
+    "type" : "windows-shell",
+    "inline" : ["Dism /online /enable-feature /featurename:NetFX3 /All /Source:D:\\sources\\sxs /LimitAccess"]
+  },
+  {
+    "type" : "windows-shell",
+    "inline" : ["net stop WSearch", "REG add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WSearch\" /v Start /t REG_DWORD /d 4 /f" ]
+  },
+  {
+    "type" : "windows-shell",
+    "inline" : ["REG ADD \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\" /v AutoDetect /t REG_DWORD /d 0 /f"]
+  },
+  {
+    "type": "powershell",
+    "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
+    "scripts": [
+      "enable-rdp.ps1",
+      "disable-hibernate.ps1",
+      "disable-autologin.ps1",
+      "download-setup.ps1",
+      "enable-uac.ps1",
+      "no-expiration.ps1",
+      "turn-off-windows-updates.ps1"
+  ]},
+  {
+    "type" : "windows-shell",
+    "inline" : ["C:\\DXSDK_Jun10.exe /U", "C:\\go1.6.3.windows-amd64.msi /quiet /norestart"]
+  },
+  {
+    "type" : "powershell",
+    "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
+    "scripts" : [
+      "extract-mozilla-build.ps1",
+      "install-vs.ps1"
+    ]
+  },
+  {
+    "type": "windows-restart",
+    "restart_command": "powershell \"& {(Get-WmiObject win32_operatingsystem).LastBootUpTime > C:\\ProgramData\\lastboot.txt; Restart-Computer -force}\"",
+    "restart_check_command": "powershell -command \"& {if ((get-content C:\\ProgramData\\lastboot.txt) -eq (Get-WmiObject win32_operatingsystem).LastBootUpTime) {Write-Output 'Sleeping for 600 seconds to wait for reboot'; start-sleep 600} else {Write-Output 'Reboot complete'}}\""
+  }
+
+],  
+
+ "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": false,
+      "output": "{{.Provider}}-windows-10.box",
+      "vagrantfile_template": "Vagrantfile.template"
+    }
+  ]
+}
+
