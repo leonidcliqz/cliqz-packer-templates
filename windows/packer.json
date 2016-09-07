@@ -1,15 +1,16 @@
 {
   "variables": {
     "iso_path": "{{user `iso_path`}}",
-    "iso_sha256": "{{user `iso_checksum`}}",
-    "webserver": "http://{{ .HTTPIP }}:{{ .HTTPPort }}"
+    "iso_sha256": "{{user `iso_sha256`}}",
+    "webserver": "http://{{ .HTTPIP }}:{{ .HTTPPort }}",
+    "version" : "{{env `BUILD_NUMBER`}}"
   },
 
   "builders": [
   {    
     "type": "vmware-iso",
     "communicator": "winrm",
-    "disk_size": 51200,
+    "disk_size": 102400,
     "floppy_files": [
       "Autounattend.xml",
       "configure-winrm.ps1"
@@ -25,17 +26,15 @@
     "winrm_password": "vagrant",
     "winrm_timeout": "6h",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
-    "skip_compaction": false,
+    "skip_compaction": true,
     "tools_upload_flavor": "windows",
     "tools_upload_path": "c:/Windows/Temp/windows.iso",
-    "http_port_min" : "9003",
-    "http_port_max" : "9003",
     "vmx_data": {
       "gui.fitguestusingnativedisplayresolution": "FALSE",
-      "memsize": "2048",
+      "memsize": "4096",
       "vmx.allowNested" : "TRUE",
       "allowNested" : "TRUE",
-      "numvcpus": "2",
+      "numvcpus": "4",
       "virtualHW.version": "10",
       "scsi0.virtualDev": "lsisas1068"
       }
@@ -58,13 +57,15 @@
     "type": "powershell",
     "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
     "scripts": [
+      "install-guest-tools.ps1",
       "enable-rdp.ps1",
       "disable-hibernate.ps1",
       "disable-autologin.ps1",
       "download-setup.ps1",
       "enable-uac.ps1",
       "no-expiration.ps1",
-      "turn-off-windows-updates.ps1"
+      "turn-off-windows-updates.ps1",
+      "openssh.ps1"
   ]},
   {
     "type" : "windows-shell",
@@ -90,9 +91,9 @@
     {
       "type": "vagrant",
       "keep_input_artifact": false,
-      "output": "{{.Provider}}-windows-10.box",
+      "output": "browser-f/windows10/{{user `version`}}.box",
       "vagrantfile_template": "Vagrantfile.template"
-    }
+   }
   ]
 }
 

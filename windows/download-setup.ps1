@@ -1,9 +1,9 @@
 #Perfect hack to download files from host to the virtual machine
-$setups = "DXSDK_Jun10.exe", "vs2015_pro.iso","mozilla-build.zip","go1.6.3.windows-amd64.msi","adminfile"
-$ftpserver = "ftp://cliqznas.local"
+$setups = "DXSDK_Jun10.exe", "vs2015_pro.iso","mozilla-build.zip","go1.6.3.windows-amd64.msi","vs2015_pro_adminfile"
+$ftpserver = "ftp://cliqznas/packerwindowsfiles"
 foreach($setup in $setups){
-	Write-host $webserver
-	$download_url = $webserver + "/" + $setup
+	$download_url = $ftpserver + "/" + $setup
 	$output = "C:\" + $setup
-	wget $download_url -Outfile $output
+	$client = new-object System.Net.WebClient
+	$client.DownloadFile($download_url, $output)
 }

@@ -1,0 +1,104 @@
+{
+  "builders": [
+    {
+      "boot_wait": "2s",
+      "disk_size": 102400,
+      "guest_os_type": "darwin12-64",
+      "iso_checksum_type": "sha256",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum" : "{{user `iso_checksum`}}",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "skip_compaction": false,
+      "ssh_port": 22,
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "darwin",
+      "type": "vmware-iso",
+      "headless": true,
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "4048",
+        "numvcpus": "4",
+        "firmware": "efi",
+        "keyboardAndMouseProfile": "macProfile",
+        "smc.present": "TRUE",
+        "hpet0.present": "TRUE",
+        "ich7m.present": "TRUE",
+        "ehci.present": "TRUE",
+        "usb.present": "TRUE"
+      }
+    }
+  ],
+  "min_packer_version": "0.7.0",
+  "post-processors": [
+     {
+      "type": "vagrant",
+      "keep_input_artifact": false,
+      "output": "browser-f/mac10.11.4/{{env `BUILD_NUMBER`}}.box"
+     }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "sleep {{user `provisioning_delay`}}"
+    },
+    {
+      "destination": "/private/tmp/packages",
+      "source": "../packages",
+      "type": "file"
+    },
+    {
+      "destination": "/private/tmp/set_kcpassword.py",
+      "source": "../scripts/support/set_kcpassword.py",
+      "type": "file"
+    },
+    {
+      "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
+      "scripts": [
+        "../scripts/vagrant.sh",
+        "../scripts/vmware.sh",
+        "../scripts/xcode-cli-tools.sh",
+        "../scripts/packages.sh",
+        "../scripts/xcode.sh",
+        "../scripts/devtools-enable.sh",
+        "../scripts/ios-simulators.sh",
+        "../scripts/brew.sh",
+        "../scripts/python_pip.sh",
+        "../scripts/bootstrap.sh",
+        "../scripts/add-network-interface-detection.sh",
+        "../scripts/autologin.sh",
+        "../scripts/system-update.sh"
+      ],
+      "environment_vars": [
+	"AUTOLOGIN={{user `autologin`}}",
+        "CHEF_VERSION={{user `chef_version`}}",
+        "FACTER_VERSION={{user `facter_version`}}",
+        "HIERA_VERSION={{user `hiera_version`}}",
+        "INSTALL_VAGRANT_KEYS={{user `install_vagrant_keys`}}",
+        "NOCM={{user `nocm`}}",
+        "INSTALL_XCODE_CLI_TOOLS={{user `install_xcode_cli_tools`}}",
+        "PASSWORD={{user `password`}}",
+        "PUPPET_VERSION={{user `puppet_version`}}",
+        "UPDATE_SYSTEM={{user `update_system`}}",
+        "USERNAME={{user `username`}}"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "vm_name": "osx-xcode-7.3",
+    "autologin": "false",
+    "chef_version": "none",
+    "facter_version": "none",
+    "hiera_version": "none",
+    "install_vagrant_keys": "true",
+    "install_xcode_cli_tools": "true",
+    "iso_url": "{{user `iso_url`}}",
+    "password": "vagrant",
+    "provisioning_delay": "0",
+    "puppet_version": "none",
+    "update_system": "true",
+    "username": "vagrant"
+  }
+}
