@@ -9,32 +9,12 @@ $isopath = "C:\Windows\Temp\windows.iso"
 
 Mount-DiskImage -ImagePath $isopath
 
-function vmware {
 
 $exe = ((Get-DiskImage -ImagePath $isopath | Get-Volume).Driveletter + ':\setup.exe')
 $parameters = '/S /v "/qr REBOOT=R"'
 
 Start-Process $exe $parameters -Wait
 
-}
-
-function virtualbox {
-
-$certpath = ((Get-DiskImage -ImagePath $isopath | Get-Volume).Driveletter + ':\cert\oracle-vbox.cer')
-certutil -addstore -f "TrustedPublisher" $certpath
-
-$exe = ((Get-DiskImage -ImagePath $isopath | Get-Volume).Driveletter + ':\VBoxWindowsAdditions.exe')
-$parameters = '/S'
-
-Start-Process $exe $parameters -Wait
-
-}
-
-if ($ENV:PACKER_BUILDER_TYPE -eq "vmware-iso") {
-    vmware
-} else {
-    virtualbox
-}
 
 #Time to clean up - dismount the image and delete the original ISO
 
