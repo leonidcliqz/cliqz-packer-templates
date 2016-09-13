@@ -72,8 +72,7 @@
     "type" : "powershell",
     "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
     "scripts" : [
-      "extract-mozilla-build.ps1",
-      "install-vs.ps1"
+      "extract-mozilla-build.ps1"
     ]
   },
   {
@@ -88,7 +87,7 @@
     {
       "type": "vagrant",
       "keep_input_artifact": false,
-      "output": "browser-f/windows10/{{user `version`}}.box",
+      "output": "browser-f|windows10|{{user `version`}}.box",
       "vagrantfile_template": "Vagrantfile.template"
    }
   ]

@@ -35,7 +35,7 @@
      {
       "type": "vagrant",
       "keep_input_artifact": false,
-      "output": "browser-f/mac10.11.4/{{user `version`}}.box"
+      "output": "browser-f|mac10.11.4|{{user `version`}}.box"
      }
   ],
   "provisioners": [
