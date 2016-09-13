@@ -35,7 +35,7 @@
      {
       "type": "vagrant",
       "keep_input_artifact": false,
-      "output": "browser-f/mac10.11.4/{{env `BUILD_NUMBER`}}.box"
+      "output": "browser-f/mac10.11.4/{{user `version`}}.box"
      }
   ],
   "provisioners": [
@@ -99,6 +99,7 @@
     "provisioning_delay": "0",
     "puppet_version": "none",
     "update_system": "true",
-    "username": "vagrant"
+    "username": "vagrant",
+    "version" : "{{env `BUILD_NUMBER`}}"
   }
 }
