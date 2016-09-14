@@ -7,3 +7,4 @@ function Unzip
 }
 
 Unzip "C:\mozilla-build.zip" "C:\"
+Unzip "C:\nss.zip" "C:\"
