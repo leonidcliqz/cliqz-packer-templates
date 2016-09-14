@@ -73,7 +73,7 @@
   },
   {
     "type" : "windows-shell",
-    "inline" : ["c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-ac 0", "c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-dc 0", "c:\\windows\\system32\\powercfg.exe -change -disk-timeout-ac 0","c:\\windows\system32\\powercfg.exe -change -disk-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-dc"]
+    "inline" : ["c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-ac 0", "c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-dc 0", "c:\\windows\\system32\\powercfg.exe -change -disk-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -disk-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-dc"]
   },
   {
     "type" : "powershell",
