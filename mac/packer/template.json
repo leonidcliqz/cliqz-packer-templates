@@ -64,6 +64,7 @@
         "../scripts/devtools-enable.sh",
         "../scripts/ios-simulators.sh",
         "../scripts/brew.sh",
+        "../scripts/sshd_config.sh",
         "../scripts/python_pip.sh",
         "../scripts/bootstrap.sh",
         "../scripts/add-network-interface-detection.sh",
