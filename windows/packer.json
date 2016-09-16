@@ -69,7 +69,7 @@
   ]},
   {
     "type" : "windows-shell",
-    "inline" : ["C:\\DXSDK_Jun10.exe /U", "C:\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\jre-8u101-windows-x64.exe /s"]
+    "inline" : ["C:\\DXSDK_Jun10.exe /U", "C:\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jre-8u101-windows-x64.exe /s"]
   },
   {
     "type" : "windows-shell",
