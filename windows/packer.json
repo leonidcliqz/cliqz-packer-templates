@@ -81,7 +81,9 @@
     "scripts" : [
       "extract-zip.ps1",
       "install-vs.ps1",
-      "remove-installers.ps1"
+      "remove-installers.ps1",
+      "set-git-config.ps1",
+      "create-dirs.ps1"
     ]
   },
   {
