@@ -15,6 +15,3 @@ sudo -u vagrant -H /bin/bash --login -c \
 
 sudo -u vagrant -H /bin/bash --login -c \
     'brew cask install java'
-
-sudo -u vagrant -H /bin/bash --login -c \
-    'brew uninstall terminal-notifier'
