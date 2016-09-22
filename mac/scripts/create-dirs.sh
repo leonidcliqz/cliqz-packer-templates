@@ -1,3 +1,3 @@
 #!/bin/bash
-mkdir /jenkins
-chown -R vagrant:vagrant /jenkins
+sudo mkdir /jenkins
+sudo chown -R vagrant:vagrant /jenkins
