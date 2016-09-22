@@ -64,12 +64,14 @@
         "../scripts/devtools-enable.sh",
         "../scripts/ios-simulators.sh",
         "../scripts/brew.sh",
-        "../scripts/sshd_config.sh",
-        "../scripts/python_pip.sh",
+        "../scripts/sshd-config.sh",
+        "../scripts/python-pip.sh",
         "../scripts/bootstrap.sh",
         "../scripts/add-network-interface-detection.sh",
         "../scripts/autologin.sh",
-        "../scripts/system-update.sh"
+        "../scripts/system-update.sh",
+        "../scripts/create-dirs.sh"
+
       ],
       "environment_vars": [
 	"AUTOLOGIN={{user `autologin`}}",

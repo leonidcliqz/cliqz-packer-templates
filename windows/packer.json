@@ -88,7 +88,7 @@
   },
   {
      "type" : "windows-shell",
-     "inline": "cd:\\mozilla-build\\python & python -m pip install compare-locales"
+     "inline": "cd c:\\mozilla-build\\python & python -m pip install compare-locales"
   },
   {
     "type": "windows-restart",
