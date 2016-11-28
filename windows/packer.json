@@ -28,10 +28,10 @@
     "tools_upload_path": "c:/Windows/Temp/windows.iso",
     "vmx_data": {
       "gui.fitguestusingnativedisplayresolution": "FALSE",
-      "memsize": "4096",
+      "memsize": "8192",
       "vmx.allowNested" : "TRUE",
       "allowNested" : "TRUE",
-      "numvcpus": "4",
+      "numvcpus": "16",
       "virtualHW.version": "10",
       "scsi0.virtualDev": "lsisas1068"
       }
