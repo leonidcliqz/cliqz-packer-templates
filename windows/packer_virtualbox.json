@@ -62,11 +62,7 @@
       "disable-geolocation.ps1",
       "turn-off-windows-screensaver.ps1"
   ]},
-  {
-    "type" : "windows-shell",
-    "inline" : ["c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jenkins\\tools\\jre-8u101-windows-x64.exe /s"]
-  },
-  {
+   {
     "type" : "windows-shell",
     "inline" : ["c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-ac 0", "c:\\windows\\system32\\powercfg.exe -change -monitor-timeout-dc 0", "c:\\windows\\system32\\powercfg.exe -change -disk-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -disk-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -standby-timeout-dc 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-ac 0","c:\\windows\\system32\\powercfg.exe -change -hibernate-timeout-dc 0"]
   },
@@ -75,8 +71,6 @@
     "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
     "scripts" : [
       "extract-zip.ps1",
-      "install-vs.ps1",
-      "remove-installers.ps1",
       "set-git-config.ps1",
       "create-dirs.ps1"
     ]

@@ -6,5 +6,5 @@ function Unzip
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
 }
 
-Unzip "C:\mozilla-build.zip" "C:\"
-Unzip "C:\nss.zip" "C:\"
+Unzip "C:\tools\mozilla-build.zip" "C:\tools"
+Unzip "C:\tools\nss.zip" "C:\tools"
