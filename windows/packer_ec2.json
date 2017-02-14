@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "iso_path": "{{user `iso_path`}}",
+    "iso_sha256": "{{user `iso_sha256`}}",
+    "version" : "{{env `BUILD_NUMBER`}}"
+  },
+
+  "builders": [{    
+    "type": "amazon-ebs",
+    "communicator": "winrm",
+    "source_ami": "ami-bec50ba8",
+    "ami_name": "windows10_pr",
+    "region": "us-east-1",
+    "instance_type": "c4.xlarge",
+    "winrm_username": "vagrant",
+    "winrm_password": "vagrant",
+    "winrm_timeout": "6h",
+    "subnet_id": "subnet-361ff61d",
+    "security_group_id": "sg-85b3e7f8"
+  }],
+  "provisioners": [
+    {
+    "type" : "windows-shell",
+    "inline" : ["c:\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\DXSDK_Jun10.exe /U", "C:\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jre-8u101-windows-x64.exe /s"]
+  },
+  {
+    "type" : "powershell",
+    "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
+    "scripts" : [
+      "extract-zip.ps1",
+      "install-vs.ps1",
+      "remove-installers.ps1",
+      "set-git-config.ps1",
+      "create-dirs.ps1"
+    ]
+  },
+  {
+     "type" : "windows-shell",
+     "inline": "cd c:\\mozilla-build\\python & python -m pip install compare-locales"
+  }
+]  
+}
+
