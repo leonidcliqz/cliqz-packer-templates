@@ -16,7 +16,7 @@
     "winrm_password": "vagrant",
     "winrm_timeout": "6h",
     "subnet_id": "subnet-361ff61d",
-    "security_group_id": "sg-85b3e7f8"
+    "security_group_id": "sg-85b3e7f8",
     "user_data_file": "./ec2-userdata.ps1"
   }],
   "provisioners": [
