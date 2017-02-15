@@ -33,29 +33,21 @@ node("docker && us-east-1") {
                 sh "aws s3 cp ${params.PACKER_S3_URL} packer"
                 sh "sudo mv packer /usr/local/bin/packer"    
             }
-            
-
         }
-        stage('Import Image') {
-            def json = buildContainersJson(params.IMAGE_S3_BUCKET, params.IMAGE_S3_PREFIX)
-            writeFile(file: 'containers.json', text: json)
-            sh 'aws ec2 import-image --description "Windows 10 PR" --disk-containers file://containers.json'
-        }
+        // stage('Import Image') {
+        //     def json = buildContainersJson(params.IMAGE_S3_BUCKET, params.IMAGE_S3_PREFIX)
+        //     writeFile(file: 'containers.json', text: json)
+        //     sh 'aws ec2 import-image --description "Windows 10 PR" --disk-containers file://containers.json'
+        // }
         
         stage('checkout') {
             git changelog: false, poll: false, url: params.GIT_REPO
         }
+           
+        stage('build') {
+            sh "packer build packer_ec2.json"
+        }
     }
-    
 
-    
-    // stage('copy iso') { 
-    //     sh "aws s3 cp ${params.IMAGE_S3_URL} ."
-    //     sh "packer validate -var-file=variables.json packer.json"
-    // }
-    
-    // stage('build') {
-    //     sh "packer build -var-file=variables.json packer.json"
-    // }
 }
 
