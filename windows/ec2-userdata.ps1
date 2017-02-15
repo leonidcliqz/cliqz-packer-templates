@@ -33,4 +33,3 @@ cmd.exe /c net start winrm
 cmd.exe /c wmic useraccount where "name='vagrant'" set PasswordExpires=FALSE
 
 </powershell>
-

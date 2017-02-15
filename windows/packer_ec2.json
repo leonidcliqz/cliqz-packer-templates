@@ -1,10 +1,4 @@
 {
-  "variables": {
-    "iso_path": "{{user `iso_path`}}",
-    "iso_sha256": "{{user `iso_sha256`}}",
-    "version" : "{{env `BUILD_NUMBER`}}"
-  },
-
   "builders": [{    
     "type": "amazon-ebs",
     "communicator": "winrm",
