@@ -28,11 +28,11 @@
     "type" : "powershell",
     "execute_command": "powershell -ExecutionPolicy Bypass \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
     "scripts" : [
-      "extract-zip.ps1",
-      "install-vs.ps1",
-      "remove-installers.ps1",
-      "set-git-config.ps1",
-      "create-dirs.ps1"
+      "./extract-zip.ps1",
+      "./install-vs.ps1",
+      "./remove-installers.ps1",
+      "./set-git-config.ps1",
+      "./create-dirs.ps1"
     ]
   },
   {
