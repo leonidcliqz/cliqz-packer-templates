@@ -1,8 +1,11 @@
 {
+  "variables": {
+    "source_ami": ""
+  },
   "builders": [{    
     "type": "amazon-ebs",
     "communicator": "winrm",
-    "source_ami": "ami-bec50ba8",
+    "source_ami": "{{ user `source_ami`}}",
     "ami_name": "windows10_pr",
     "region": "us-east-1",
     "instance_type": "c4.xlarge",
