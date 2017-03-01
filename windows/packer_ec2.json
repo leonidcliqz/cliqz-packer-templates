@@ -11,12 +11,14 @@
     "winrm_timeout": "6h",
     "subnet_id": "subnet-361ff61d",
     "security_group_id": "sg-85b3e7f8",
-    "user_data_file": "./ec2-userdata.ps1"
+    "user_data_file": "./ec2-userdata.ps1",
+    "ssh_private_ip": true
   }],
   "provisioners": [
     {
     "type" : "windows-shell",
-    "inline" : ["c:\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\DXSDK_Jun10.exe /U", "C:\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jre-8u101-windows-x64.exe /s"]
+    "inline" : ["c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jenkins\\tools\\jre-8u101-windows-x64.exe /s"]
+
   },
   {
     "type" : "powershell",

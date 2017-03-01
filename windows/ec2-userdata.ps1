@@ -1,35 +1,24 @@
 <powershell>
 
-write-output "Running User Data Script"
-write-host "(host) Running User Data Script"
+# Supress network location Prompt
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force
 
-Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
+# Set network to private
+$ifaceinfo = Get-NetConnectionProfile
+Set-NetConnectionProfile -InterfaceIndex $ifaceinfo.InterfaceIndex -NetworkCategory Private
 
-# Don't set this before Set-ExecutionPolicy as it throws an error
-$ErrorActionPreference = "stop"
+# Set up WinRM and configure some things
+winrm quickconfig -q
+winrm s "winrm/config" '@{MaxTimeoutms="1800000"}'
+winrm s "winrm/config/winrs" '@{MaxMemoryPerShellMB="2048"}'
+winrm s "winrm/config/service" '@{AllowUnencrypted="true"}'
+winrm s "winrm/config/service/auth" '@{Basic="true"}'
 
-# Remove HTTP listener
-Remove-Item -Path WSMan:\Localhost\listener\listener* -Recurse
+# Enable the WinRM Firewall rule, which will likely already be enabled due to the 'winrm quickconfig' command above
+Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)"
 
-# WinRM
-write-output "Setting up WinRM"
-write-host "(host) setting up WinRM"
+sc.exe config winrm start= auto
 
-cmd.exe /c winrm quickconfig -q
-cmd.exe /c winrm quickconfig '-transport:http'
-cmd.exe /c winrm set "winrm/config" '@{MaxTimeoutms="1800000"}'
-cmd.exe /c winrm set "winrm/config/winrs" '@{MaxMemoryPerShellMB="1024"}'
-cmd.exe /c winrm set "winrm/config/service" '@{AllowUnencrypted="true"}'
-cmd.exe /c winrm set "winrm/config/client" '@{AllowUnencrypted="true"}'
-cmd.exe /c winrm set "winrm/config/service/auth" '@{Basic="true"}'
-cmd.exe /c winrm set "winrm/config/client/auth" '@{Basic="true"}'
-cmd.exe /c winrm set "winrm/config/service/auth" '@{CredSSP="true"}'
-cmd.exe /c winrm set "winrm/config/listener?Address=*+Transport=HTTP" '@{Port="5985"}'
-cmd.exe /c netsh advfirewall firewall set rule group="remote administration" new enable=yes
-cmd.exe /c netsh firewall add portopening TCP 5985 "Port 5985"
-cmd.exe /c net stop winrm
-cmd.exe /c sc config winrm start= auto
-cmd.exe /c net start winrm
-cmd.exe /c wmic useraccount where "name='vagrant'" set PasswordExpires=FALSE
+exit 0
 
 </powershell>

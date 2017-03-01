@@ -9,10 +9,12 @@ foreach($setup in $setups) {
     $downloadUrl = $ftpServer + "/" + $setup
     $output = $baseDir + "\\" + $setup
     $client = new-object System.Net.Webclient
+    write-output ("Getting " + $setup + " to " + $output)
     try {
         $client.DownloadFile($downloadUrl, $output)
     } catch [Exception] {
         echo $_.Exception|format-list -force
     }
+    write-output ("Success")
 }
 
