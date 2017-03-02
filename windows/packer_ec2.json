@@ -35,7 +35,7 @@
   },
   {
      "type" : "windows-shell",
-     "inline": "cd c:\\tools\mozilla-build\\python & python -m pip install compare-locales"
+     "inline": "cd c:\\tools\\mozilla-build\\python & python -m pip install compare-locales"
   }
 ]  
 }
