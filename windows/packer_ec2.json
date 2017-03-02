@@ -29,14 +29,13 @@
     "scripts" : [
       "./extract-zip.ps1",
       "./install-vs.ps1",
-      "./remove-installers.ps1",
       "./set-git-config.ps1",
       "./create-dirs.ps1"
     ]
   },
   {
      "type" : "windows-shell",
-     "inline": "cd c:\\mozilla-build\\python & python -m pip install compare-locales"
+     "inline": "cd c:\\tools\mozilla-build\\python & python -m pip install compare-locales"
   }
 ]  
 }
