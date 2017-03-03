@@ -15,7 +15,8 @@
     "subnet_id": "subnet-361ff61d",
     "security_group_id": "sg-85b3e7f8",
     "user_data_file": "./ec2-userdata.ps1",
-    "ssh_private_ip": true
+    "ssh_private_ip": true,
+    "associate_public_ip_address": false
   }],
   "provisioners": [
     {
