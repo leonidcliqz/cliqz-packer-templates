@@ -8,7 +8,7 @@
     "source_ami": "{{ user `source_ami`}}",
     "ami_name": "windows10_pr",
     "region": "us-east-1",
-    "instance_type": "c4.xlarge",
+    "instance_type": "c4.4xlarge",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "winrm_timeout": "6h",
