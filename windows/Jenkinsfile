@@ -2,50 +2,50 @@ import groovy.json.*
 
 @NonCPS
 def buildContainersJson(bucket, prefix) {
-    def jsonText = sprintf('[{"Description": "Windows 10 PR", "Format": "ova", "UserBucket": {"S3Bucket": "%s", "S3Key": "%s"}}]', [bucket, prefix]) 
+    def jsonText = sprintf('[{"Description": "Windows 10 PR", "Format": "ova", "UserBucket": {"S3Bucket": "%s", "S3Key": "%s"}}]', [bucket, prefix])
     def object = JsonOutput.prettyPrint(jsonText)
     return object
 }
 
+properties([
+    [$class: 'JobRestrictionProperty'],
+    parameters([
+        string(defaultValue: 'https://github.com/leonidcliqz/cliqz-packer-templates',
+            name: 'GIT_REPO'),
+        string(defaultValue: 's3://cliqz-ci/packer/packer',
+            name: 'PACKER_S3_URL'),
+        string(defaultValue: 'cliqz-ci',
+            name: 'IMAGE_S3_BUCKET'),
+            
+        string(defaultValue: 'images/raw/packer-virtualbox-iso-1487178930.ova',
+            name: 'IMAGE_S3_PREFIX'),
+        string(defaultValue: 'us-east-1', name: 'AWS_REGION')
+    ]),
+    pipelineTriggers([])
+])
+
+
 node("docker && us-east-1") {
-    properties([
-        [$class: 'JobRestrictionProperty'],
-        parameters([
-            string(defaultValue: 'https://github.com/cliqz-oss/cliqz-packer-templates',
-                name: 'GIT_REPO'),
-            string(defaultValue: 's3://cliqz-ci/packer/packer',
-                name: 'PACKER_S3_URL'),
-            string(defaultValue: 'cliqz-ci',
-                name: 'IMAGE_S3_BUCKET'),
-            string(defaultValue: 'images/raw/packer-virtualbox-iso-1486460350.ova',
-                name: 'IMAGE_S3_PREFIX'),
-            string(defaultValue: 'us-east-1', name: 'AWS_REGION')
-        ]),
-        pipelineTriggers([])
-    ])
+    
     ws('b') {
         stage('Preparing the slave') {
             writeFile file: '/home/ubuntu/.aws/config', text: "[default]\nregion = ${params.AWS_REGION}"
                 sh "chmod 0600 /home/ubuntu/.aws/config"
-                
+
             def curr_dir = sh returnStdout: true, script: "pwd"
             withEnv(["CURR_DIR=${curr_dir}"]) {
                 sh "aws s3 cp ${params.PACKER_S3_URL} packer"
-                sh "sudo mv packer /usr/local/bin/packer"    
+                sh "sudo mv packer /usr/local/bin/packer"
+                sh "chmod a+x /usr/local/bin/packer"
             }
-        }
-        // stage('Import Image') {
-        //     def json = buildContainersJson(params.IMAGE_S3_BUCKET, params.IMAGE_S3_PREFIX)
-        //     writeFile(file: 'containers.json', text: json)
-        //     sh 'aws ec2 import-image --description "Windows 10 PR" --disk-containers file://containers.json'
-        // }
-        
-        stage('checkout') {
-            git changelog: false, poll: false, url: params.GIT_REPO
-        }
-           
-        stage('build') {
-            sh "packer build packer_ec2.json"
+    
+            stage('checkout') {
+                git changelog: false, branch: 'ova-format',  poll: false, url: params.GIT_REPO
+            }
+    
+            stage('build') {
+                sh "cd windows && packer build -on-error=abort -color=false -var 'source_ami=ami-78df066e' -debug packer_ec2.json"
+            }
         }
     }
 
