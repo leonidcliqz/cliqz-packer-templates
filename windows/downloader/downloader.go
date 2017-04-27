@@ -31,9 +31,9 @@ func getConfig() *Configuration {
 	return &config
 }
 
-func download(bucket, packageKey, output string) {
+func download(region, bucket, packageKey, output string) {
 	sess := session.New()
-	svc := s3.New(sess, aws.NewConfig().WithRegion("us-east-1"))
+	svc := s3.New(sess, aws.NewConfig().WithRegion(region))
 
 	results, err := svc.GetObject(&s3.GetObjectInput{
 		Bucket: aws.String(Bucket),
@@ -84,6 +84,6 @@ func main() {
         output := strings.Join([]string{config.PackagesDir, v}, "/")
 
         log.Printf("Downloading %v", v)
-		download(config.Bucket, packageKey, output)
+		download(config.Region, config.Bucket, packageKey, output)
 	}
 }
