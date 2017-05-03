@@ -43,10 +43,6 @@
   },
   {
     "type" : "windows-shell",
-    "inline" : ["Dism /online /enable-feature /featurename:NetFX3 /All /Source:D:\\sources\\sxs /LimitAccess"]
-  },
-  {
-    "type" : "windows-shell",
     "inline" : ["net stop WSearch", "REG add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WSearch\" /v Start /t REG_DWORD /d 4 /f" ]
   },
   {
