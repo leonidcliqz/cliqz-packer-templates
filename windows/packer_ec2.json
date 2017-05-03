@@ -1,6 +1,8 @@
 {
   "variables": {
     "source_ami": ""
+    "aws_access_key_id": "",
+    "aws_secret_access_key": ""
   },
   "builders": [{    
     "type": "amazon-ebs",
@@ -20,14 +22,30 @@
   }],
   "provisioners": [
   {
+    "type": "powershell",
+    "inline": ["New-Item -ItemType Directory -Force -Path C:\\jenkins\\"]
+  },
+  {
     "type": "file",
     "source": "downloadr.exe",
-    "destination": "c:\\jenkins\\"
+    "destination": "c:\\jenkins\\downloadr.exe"
   },
-
+  {
+    "type": "file",
+    "inline": "config.json",
+    "destination": "C:\\jenkins\\config.json"
+  },
   {
     "type": "windows-shell",
     "inline": ["c\\jenkins\\downloadr.exe"]
+  },
+  {
+    "type": "windows-shell",
+    "inline": ["C:\\jenkins\\downloadr.exe -configFile C:\\jenkins\\config.json"]
+    "environment_vars": [
+        "AWS_SECRET_ACCESS_KEY={{user `aws_secret_access_key`}}",
+        "AWS_ACCESS_KEY_ID={{user `aws_access_key_id`}}"
+    ]
   },
   {
     "type" : "windows-shell",
