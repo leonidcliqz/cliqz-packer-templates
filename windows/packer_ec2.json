@@ -1,14 +1,13 @@
 {
   "variables": {
-    "source_ami": "",
     "aws_access_key_id": "",
     "aws_secret_access_key": ""
   },
   "builders": [{    
     "type": "amazon-ebs",
     "communicator": "winrm",
-    "source_ami": "{{ user `source_ami`}}",
-    "ami_name": "windows10_pr",
+    "source_ami": "ami-3d787d57",
+    "ami_name": "windows_build_pr",
     "region": "us-east-1",
     "instance_type": "c4.4xlarge",
     "winrm_username": "vagrant",
