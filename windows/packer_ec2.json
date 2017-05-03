@@ -31,7 +31,7 @@
   },
   {
     "type": "file",
-    "inline": "config.json",
+    "source": "config.json",
     "destination": "C:\\jenkins\\config.json"
   },
   {
