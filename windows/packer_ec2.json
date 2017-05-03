@@ -6,7 +6,7 @@
   "builders": [{    
     "type": "amazon-ebs",
     "communicator": "winrm",
-    "source_ami": "ami-c01102a8",
+    "source_ami": "ami-e659c7f0",
     "ami_name": "windows_build_pr",
     "region": "us-east-1",
     "instance_type": "c4.4xlarge",
