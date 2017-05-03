@@ -35,10 +35,6 @@
   },
   {
     "type": "windows-shell",
-    "inline": ["c\\jenkins\\downloadr.exe"]
-  },
-  {
-    "type": "windows-shell",
     "inline": ["C:\\jenkins\\downloadr.exe -configFile C:\\jenkins\\config.json"],
     "environment_vars": [
         "AWS_SECRET_ACCESS_KEY={{user `aws_secret_access_key`}}",
