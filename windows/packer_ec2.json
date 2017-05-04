@@ -21,6 +21,13 @@
   "provisioners": [
   {
     "type": "powershell",
+    "scripts": [
+        "Ec2Config.ps1",
+        "ConfigureRemotingForAnsible.ps1"
+    ]
+  },
+  {
+    "type": "powershell",
     "inline": ["New-Item -ItemType Directory -Force -Path C:\\jenkins\\"]
   },
   {
