@@ -7,7 +7,7 @@
     "type": "amazon-ebs",
     "communicator": "winrm",
     "source_ami": "ami-e659c7f0",
-    "ami_name": "windows_build_pr",
+    "ami_name": "windows-pr-build-0.0.1",
     "region": "us-east-1",
     "instance_type": "c4.4xlarge",
     "winrm_username": "Administrator",
