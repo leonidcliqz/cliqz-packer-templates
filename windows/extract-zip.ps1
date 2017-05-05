@@ -6,5 +6,5 @@ function Unzip
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
 }
 
-Unzip "C:\jenkins\tools\mozilla-build.zip" "C:\jenkins\tools"
-Unzip "C:\jenkins\tools\nss.zip" "C:\jenkins\tools"
+Unzip "C:\jenkins\tools\mozilla-build.zip" "C:\"
+Unzip "C:\jenkins\tools\nss.zip" "C:\"
