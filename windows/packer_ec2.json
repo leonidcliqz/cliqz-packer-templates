@@ -16,7 +16,16 @@
     "security_group_id": "sg-85b3e7f8",
     "user_data_file": "./ec2-userdata.ps1",
     "ssh_private_ip": true,
-    "associate_public_ip_address": false
+    "associate_public_ip_address": false,
+	"ami_block_device_mappings": [
+    	{
+    		"device_name": "xvdh",
+    		"volume_type": "gp2",
+    		"volume_size": "100",
+    		"delete_on_termination": true,
+    		"encrypted": false
+   		}
+	]
   }],
   "provisioners": [
   {
