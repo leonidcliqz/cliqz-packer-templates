@@ -109,7 +109,7 @@
   },
   {
      "type" : "windows-shell",
-     "inline": "cd c:\\jenkins\\tools\\mozilla-build\\python & python -m pip install compare-locales"
+     "inline": "cd c:\\mozilla-build\\python & python -m pip install compare-locales"
   }
 ]  
 }
