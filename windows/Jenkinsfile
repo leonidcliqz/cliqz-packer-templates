@@ -1,53 +1,64 @@
-import groovy.json.*
-
-@NonCPS
-def buildContainersJson(bucket, prefix) {
-    def jsonText = sprintf('[{"Description": "Windows 10 PR", "Format": "ova", "UserBucket": {"S3Bucket": "%s", "S3Key": "%s"}}]', [bucket, prefix])
-    def object = JsonOutput.prettyPrint(jsonText)
-    return object
-}
 
 properties([
     [$class: 'JobRestrictionProperty'],
     parameters([
         string(defaultValue: 'https://github.com/leonidcliqz/cliqz-packer-templates',
             name: 'GIT_REPO'),
+		string(defaultValue: 'ova-format',
+            name: 'GIT_BRANCH'),
         string(defaultValue: 's3://cliqz-ci/packer/packer',
             name: 'PACKER_S3_URL'),
+        string(defaultValue: '/home/ubuntu/packer',
+            name: 'PACKER_PATH'),    
         string(defaultValue: 'cliqz-ci',
-            name: 'IMAGE_S3_BUCKET'),
-            
-        string(defaultValue: 'images/raw/packer-virtualbox-iso-1487178930.ova',
-            name: 'IMAGE_S3_PREFIX'),
-        string(defaultValue: 'us-east-1', name: 'AWS_REGION')
+            name: 'S3_BUCKET'),
+		string(defaultValue: 'd7e38c4a-37eb-490b-b4da-2f53cc14ab1b',
+            name: 'AWS_CREDENTIALS')       
+
     ]),
     pipelineTriggers([])
 ])
 
 
-node("docker && us-east-1") {
-    
-    ws('b') {
-        stage('Preparing the slave') {
-            writeFile file: '/home/ubuntu/.aws/config', text: "[default]\nregion = ${params.AWS_REGION}"
-                sh "chmod 0600 /home/ubuntu/.aws/config"
 
-            def curr_dir = sh returnStdout: true, script: "pwd"
-            withEnv(["CURR_DIR=${curr_dir}"]) {
-                sh "aws s3 cp ${params.PACKER_S3_URL} packer"
-                sh "sudo mv packer /usr/local/bin/packer"
-                sh "chmod a+x /usr/local/bin/packer"
+node("docker && us-east-1") {
+    ws("/home/ubuntu/jenkins/") {
+        stage("Checkout") {
+            git(
+                branch: params.GIT_BRANCH, 
+                credentialsId: 'cliqz-ci', 
+                url: params.GIT_REPO
+            ) 
+        }
+        
+        stage("Download Packer") {
+            if (!fileExists(params.PACKER_PATH})) {
+                s3Download bucket: params.S3_BUCKET, file: params.PACKER_PATH, path: 'packer/packer'
+                sh "chmod +x ${params.PACKER_PATH}"
+            } 
+        }
+        dir("/home/ubuntu/jenkins/windows") {
+            stage("Download Downloadr") {
+                if (!fileExists('downloadr.exe')) {
+                    s3Download bucket: params.S3_BUCKET, file: 'downloadr.exe', path: 'packer/downloadr.exe'
+                }
+                if (!fileExists('config.json')) {
+                    s3Download bucket: params.S3_BUCKET, file: 'config.json', path: 'packer/config.json'
+                }
+            
             }
-    
-            stage('checkout') {
-                git changelog: false, branch: 'ova-format',  poll: false, url: params.GIT_REPO
-            }
-    
-            stage('build') {
-                sh "cd windows && packer build -on-error=abort -color=false -var 'source_ami=ami-78df066e' -debug packer_ec2.json"
+        
+            stage("Build Image") {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+                    credentialsId: params.AWS_CREDENTIALS, 
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh 'PACKER_LOG=1 ${params.PACKER_PATH} build -var "aws_access_key_id=${AWS_ACCESS_KEY_ID}" -var "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" packer_ec2.json'
+                }
+         
             }
         }
     }
-
 }
 
