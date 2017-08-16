@@ -32,7 +32,7 @@ node("docker && us-east-1") {
         }
         
         stage("Download Packer") {
-            if (!fileExists(params.PACKER_PATH})) {
+            if (!fileExists(params.PACKER_PATH)) {
                 s3Download bucket: params.S3_BUCKET, file: params.PACKER_PATH, path: 'packer/packer'
                 sh "chmod +x ${params.PACKER_PATH}"
             } 
