@@ -54,7 +54,8 @@ node("docker && us-east-1") {
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
                     credentialsId: params.AWS_CREDENTIALS, 
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    sh 'PACKER_LOG=1 ${params.PACKER_PATH} build -var "aws_access_key_id=${AWS_ACCESS_KEY_ID}" -var "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" packer_ec2.json'
+                    command = 
+                    sh 'PACKER_LOG=1 /home/ubuntu/packer build -var "aws_access_key_id=${AWS_ACCESS_KEY_ID}" -var "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" packer_ec2.json'
                 }
          
             }
