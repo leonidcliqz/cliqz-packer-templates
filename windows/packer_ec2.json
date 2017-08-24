@@ -6,7 +6,7 @@
   "builders": [{    
     "type": "amazon-ebs",
     "communicator": "winrm",
-    "source_ami": "ami-d19d92c7",
+    "source_ami": "ami-d79d92c1",
     "ami_name": "windows-pr-build-{{ timestamp }}",
     "region": "us-east-1",
     "instance_type": "c4.4xlarge",
@@ -17,8 +17,8 @@
     "user_data_file": "./ec2-userdata.ps1",
     "ssh_private_ip": true,
     "associate_public_ip_address": false,
-	"launch_block_device_mappings": [
-    	{
+    "launch_block_device_mappings": [
+  	{
       		"device_name": "/dev/sda1",
       		"volume_size": 60,
       		"volume_type": "gp2",
@@ -32,6 +32,7 @@
     "type": "powershell",
     "scripts": [
         "Ec2Config.ps1",
+        "BundleConfig.ps1",
         "ConfigureRemotingForAnsible.ps1"
     ]
   },
@@ -87,7 +88,7 @@
   },
   {
     "type" : "windows-shell",
-    "inline" : ["c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart", "c:\\jenkins\\tools\\jre-8u101-windows-x64.exe /s"]
+    "inline" : ["c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart" ]
   },
   {
     "type" : "windows-shell",

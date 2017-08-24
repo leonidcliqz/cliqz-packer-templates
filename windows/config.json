@@ -1,0 +1,16 @@
+{
+	"Region": "us-east-1",
+	"PackagesDir": "c:\\jenkins\\tools",
+	"Bucket": "cliqz-ci",
+	"KeyBase": "packer/windows_tools",
+	"Packages": [
+		"Git-2.10.0-32-bit.exe", 
+		"go1.6.3.windows-amd64.msi", 
+		"jre-8u101-windows-x64.exe", 
+		"mozilla-build.zip", 
+		"nss.zip", 
+		"vs2015_pro.iso", 
+		"vs2015_pro_adminfile",
+        "DXSDK_Jun10.exe"
+	]
+}
