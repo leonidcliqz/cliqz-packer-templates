@@ -39,15 +39,15 @@ node("docker && us-east-1") {
         }
         dir("/home/ubuntu/jenkins/windows") {
             stage("Download Downloadr") {
-                if (!fileExists('downloadr.exe')) {
-                    s3Download bucket: params.S3_BUCKET, file: 'downloadr.exe', path: 'packer/downloadr.exe'
+                ansiColor('xterm') {
+                    if (!fileExists('downloadr.exe')) {
+                        s3Download bucket: params.S3_BUCKET, file: 'downloadr.exe', path: 'packer/downloadr.exe'
+                    }
+                    if (!fileExists('config.json')) {
+                        s3Download bucket: params.S3_BUCKET, file: 'config.json', path: 'packer/config.json'
+                    }
                 }
-                if (!fileExists('config.json')) {
-                    s3Download bucket: params.S3_BUCKET, file: 'config.json', path: 'packer/config.json'
-                }
-            
             }
-        
             stage("Build Image") {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding', 
