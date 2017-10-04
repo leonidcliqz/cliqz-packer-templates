@@ -4,7 +4,7 @@ write-output "Running user data script"
 write-host "(host) Running user data script"
 
 cmd.exe /c net user /add vagrant Cliqz@666
-cmd.exec /c net localgroup administrators vagrant /add
+cmd.exe /c net localgroup administrators vagrant /add
 
 Set-ExecutionPolicy -ExecutionPolicy bypass -Force
 
