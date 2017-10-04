@@ -88,7 +88,12 @@
   },
   {
     "type" : "windows-shell",
-    "inline" : ["c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart" ]
+    "inline" : [ 
+        "c:\\jenkins\\tools\\Git-2.10.0-32-bit.exe /VERYSILENT", 
+        "c:\\jenkins\\tools\\DXSDK_Jun10.exe /U", 
+        "C:\\jenkins\\tools\\go1.6.3.windows-amd64.msi /quiet /norestart", 
+        "c:\\jenkins\\tools\\jre-8u101-windows-x64.exe /s" 
+    ]
   },
   {
     "type" : "windows-shell",
